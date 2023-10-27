@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { Dataset } from 'crawlee';
+import { Dataset, log } from 'crawlee';
 
 const { APIFY_TOKEN, ACTOR_TASK_ID } = process.env;
 
@@ -17,7 +17,7 @@ export async function fetchPreviousDatasetItems() {
 
         return previousDataset.data;
     } catch (error) {
-        console.error('Error fetching previous dataset items:', error.message);
+        log.error('Error fetching previous dataset items:', error.message);
         throw error; // or return a default value or handle the error appropriately
     }
 }
@@ -28,7 +28,7 @@ export async function fetchCurrentDatasetItems() {
         const newDatasetItems = await newDataset.getData();
         return newDatasetItems.items;
     } catch (error) {
-        console.error('Error fetching current dataset items:', error.message);
+        log.error('Error fetching current dataset items:', error.message);
         throw error; // or return a default value or handle the error appropriately
     }
 }

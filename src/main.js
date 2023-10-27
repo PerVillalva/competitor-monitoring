@@ -1,6 +1,6 @@
-import { Actor } from 'apify';
+import { Actor, log } from 'apify';
 
-import { sitemapScraper } from './crawlers/sitemapScraper.js';
+import { sitemapScraper } from './crawlers/sitemapScraper/sitemapScraper.js';
 import { fetchTwitterData } from './crawlers/twitterScraper.js';
 import { fetchYoutubeData } from './crawlers/youtubeScraper.js';
 import {
@@ -52,7 +52,7 @@ import { postSlackMessage } from './slack/sendMessage.js';
             const KVS = Actor.openKeyValueStore();
 
             if (differences.length) {
-                console.log('New pages:', differences);
+                log.info('New pages:', differences);
                 await Actor.setValue('NEW_PAGES', { newUrls: differences });
 
                 // Get newly added pages' urls from the KeyValueStore
@@ -60,18 +60,18 @@ import { postSlackMessage } from './slack/sendMessage.js';
                 const addedUrls = await (await KVS).getValue('NEW_PAGES');
                 newPages = addedUrls.newUrls;
             } else {
-                console.log('No new pages found.');
+                log.info('No new pages found.');
                 newPages = [];
             }
 
             if (updates.length) {
-                console.log('New updates:', updates);
+                log.info('New updates:', updates);
                 await Actor.setValue('PAGE_UPDATES', { updates });
 
                 const pageUpdates = await (await KVS).getValue('PAGE_UPDATES');
                 updatedPages = pageUpdates.updates;
             } else {
-                console.log('No pages were updated.');
+                log.info('No pages were updated.');
                 updatedPages = [];
             }
 
@@ -109,7 +109,7 @@ import { postSlackMessage } from './slack/sendMessage.js';
                 );
             }
         } catch (error) {
-            console.error('Error occurred:', error.message);
+            log.info('Error occurred:', error.message);
         }
     }
     await main();
