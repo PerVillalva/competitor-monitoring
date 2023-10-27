@@ -1,0 +1,83 @@
+{
+    "title": "Competitor's Activity Monitoring (CAM)",
+    "type": "object",
+    "schemaVersion": 1,
+    "properties": {
+        "startUrls": {
+            "title": "Sitemap URL",
+            "type": "array",
+            "description": "Sitemap URLs to start with.",
+            "editor": "requestListSources",
+            "prefill": [
+                {
+                    "url": "https://www.scrapingbee.com/sitemap.xml"
+                }
+            ]
+        },
+        "twitterProfile": {
+            "sectionCaption": "Twitter",
+            "title": "Twitter Profile",
+            "type": "string",
+            "description": "Competitor's Twitter profile.",
+            "editor": "textfield"
+        },
+        "twitterFilterTerm": {
+            "title": "Filter term",
+            "type": "string",
+            "description": "Provide a specific term to filter tweets containing this term in the text.",
+            "editor": "textfield"
+        },
+        "ytChannel": {
+            "sectionCaption": "YouTube",
+            "title": "YouTube Channel Url",
+            "type": "array",
+            "description": "Provide the competitor's YouTube channel Url you would like to monitor.",
+            "editor": "requestListSources"
+        },
+        "ytLastNDays": {
+            "title": "Videos from last (e.g. 2) days",
+            "type": "integer",
+            "description": "Specify how old scraped videos can be (in days). Putting 1 will get you only today's videos, 2 - tomorrow's and today's, and so on.",
+            "minimum": 0,
+            "default": 7
+        },
+        "ytMaxResults": {
+            "title": "Maximum scraped videos",
+            "type": "integer",
+            "description": "Limit the amount of videos scraped from the channel.",
+            "minimum": 0,
+            "default": 20
+        },
+        "slackChannel": {
+            "sectionCaption": "Slack API Configuration",
+            "title": "Slack channel name",
+            "type": "string",
+            "description": "Provide the name of the channel you want your message to be sent to. (e.g., competitor-monitoring)",
+            "editor": "textfield"
+        },
+        "slackBotToken": {
+            "title": "Slack Bot Token",
+            "type": "string",
+            "description": "Provide your Slack App's Bot User OAuth Token (find it under your App's OAuth & Permissions tab)",
+            "editor": "textfield",
+            "isSecret": true
+        },
+        "slackSignInSecret": {
+            "title": "Slack Signin Secret",
+            "type": "string",
+            "description": "Provide your Slack App's Signin Secret (in your App's page, go to Basic information -> App Credentials)",
+            "editor": "textfield",
+            "isSecret": true
+        },
+        "proxyConfig": {
+            "title": "Proxy configuration",
+            "type": "object",
+            "description": "It's recommended to leave the 'Automatic Proxy you can use automatic Apify proxies, Residentials or your own proxies.",
+            "prefill": { "useApifyProxy": true },
+            "default": { "useApifyProxy": true },
+            "editor": "proxy",
+            "sectionCaption": "Proxy configuration"
+        }
+    },
+    "required": ["startUrls", "proxyConfig"]
+}

@@ -1,0 +1,12 @@
+{
+    "actorSpecification": 1,
+    "name": "cam",
+    "title": "Competitor's Activity Monitoring (CAM)",
+    "description": "Competitor's Activity Monitoring (CAM)",
+    "version": "0.0",
+    "meta": {
+        "templateId": "js-crawlee-cheerio"
+    },
+    "input": "./input_schema.json",
+    "dockerfile": "./Dockerfile"
+}

@@ -1,0 +1,28 @@
+{
+	"name": "competitors-monitoring-actor",
+	"version": "0.0.1",
+	"type": "module",
+	"description": "This is a boilerplate of an Apify actor.",
+	"engines": {
+		"node": ">=18.0.0"
+	},
+	"dependencies": {
+		"@slack/bolt": "^3.14.0",
+		"apify": "^3.1.10",
+		"axios": "^1.5.1",
+		"crawlee": "^3.5.4",
+		"dotenv": "^16.3.1"
+	},
+	"devDependencies": {
+		"@apify/eslint-config": "^0.4.0",
+		"eslint": "^8.50.0"
+	},
+	"scripts": {
+		"start": "node src/main.js",
+		"lint": "eslint ./src --ext .js,.jsx",
+		"lint:fix": "eslint ./src --ext .js,.jsx --fix",
+		"test": "echo \"Error: oops, the actor has no tests yet, sad!\" && exit 1"
+	},
+	"author": "It's not you it's me",
+	"license": "ISC"
+}
