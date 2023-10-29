@@ -1,7 +1,9 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
 import Slack from '@slack/bolt';
+import { log } from 'apify';
 
 export async function postSlackMessage(
+    initialUrl,
     newUrls,
     pageUpdates,
     newTweets,
@@ -12,6 +14,9 @@ export async function postSlackMessage(
 ) {
     const separator = '\n⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯';
     const sectionSeparator = '============================================\n';
+
+    const competitorNameRaw = new URL(initialUrl[0].url).hostname.split('.')[1];
+    const competitorNameClean = competitorNameRaw.charAt(0).toUpperCase() + competitorNameRaw.slice(1);
 
     // Prepare Tweets
     let tweetsString;
@@ -62,8 +67,8 @@ export async function postSlackMessage(
         token: slackBotToken,
         channel: slackChannel,
         // eslint-disable-next-line max-len
-        text: `\n${pagesString}\n${sectionSeparator}${updatesString}\n${sectionSeparator}:bird: Twitter Activity:\n${tweetsString}\n${sectionSeparator}:arrow_forward: YouTube Activity:\n${ytString}\n`,
+        text: `🆚 Report for: ${competitorNameClean}\n${sectionSeparator}${pagesString}\n${sectionSeparator}${updatesString}\n${sectionSeparator}:bird: Twitter Activity:\n${tweetsString}\n${sectionSeparator}:arrow_forward: YouTube Activity:\n${ytString}\n`,
     });
 
-    console.log('📤 Competitor activity report sent to Slack.');
+    log.info('📤 Competitor activity report sent to Slack.');
 }

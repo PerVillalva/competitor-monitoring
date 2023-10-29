@@ -17,7 +17,7 @@ export async function fetchPreviousDatasetItems() {
 
         return previousDataset.data;
     } catch (error) {
-        log.error('Error fetching previous dataset items:', error.message);
+        log.error('Error fetching previous dataset items:', error);
         throw error; // or return a default value or handle the error appropriately
     }
 }
