@@ -99,6 +99,7 @@ import { postSlackMessage } from './slack/sendMessage.js';
             // Send competitors' report to Slack
             if (slackSignInSecret) {
                 await postSlackMessage(
+                    initialUrls,
                     newPages,
                     updatedPages,
                     twitterData,
