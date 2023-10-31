@@ -15,7 +15,9 @@ export async function postSlackMessage(
     const separator = '\n⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯';
     const sectionSeparator = '============================================\n';
 
-    const competitorNameRaw = new URL(initialUrl[0].url).hostname.split('.')[1];
+    const { hostname } = new URL(initialUrl[0].url);
+    const parts = hostname.split('.');
+    const competitorNameRaw = parts.length > 2 ? parts[1] : parts[0];
     const competitorNameClean = competitorNameRaw.charAt(0).toUpperCase() + competitorNameRaw.slice(1);
 
     // Prepare Tweets
