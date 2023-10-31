@@ -27,7 +27,7 @@ export async function postSlackMessage(
         newTweets.forEach((tweet, index) => {
             tweetsString += `${separator}\nTweet ${index + 1}:\nUrl: ${
                 tweet.tweetUrl
-            }\nText: ${tweet.tweetText}\nDate: ${tweet.tweetDate}`;
+            }\nAuthor: ${tweet.tweetAuthor}\nText: ${tweet.tweetText}\nDate: ${tweet.tweetDate}`;
         });
     } else {
         tweetsString = `No new Tweets.`;
