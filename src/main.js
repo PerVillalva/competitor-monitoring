@@ -19,6 +19,7 @@ import { postSlackMessage } from './slack/sendMessage.js';
                 proxyConfig,
                 twitterProfile,
                 twitterFilterTerm,
+                twitterLastNDays,
                 ytChannel,
                 ytLastNDays,
                 ytMaxResults,
@@ -82,6 +83,7 @@ import { postSlackMessage } from './slack/sendMessage.js';
                 twitterData = await fetchTwitterData(
                     twitterProfile,
                     twitterFilterTerm,
+                    twitterLastNDays,
                 );
             }
 

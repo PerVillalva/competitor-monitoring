@@ -27,6 +27,13 @@
             "description": "Provide a specific term to filter tweets containing this term in the text.",
             "editor": "textfield"
         },
+        "twitterLastNDays": {
+            "title": "Tweets from last 'n' (e.g., 7) days",
+            "type": "integer",
+            "description": "Specify how old scraped tweets can be (in days).",
+            "minimum": 0,
+            "default": 7
+        },
         "ytChannel": {
             "sectionCaption": "YouTube",
             "title": "YouTube Channel Url",
