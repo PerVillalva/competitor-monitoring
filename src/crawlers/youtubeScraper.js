@@ -1,10 +1,10 @@
-import { Actor } from 'apify';
+import { Actor, log } from 'apify';
 import axios from 'axios';
 
 const { APIFY_TOKEN } = process.env;
 
 export async function fetchYoutubeData(channelUrl, nDays, ytMaxResults) {
-    console.log('📽️ Gathering Youtube Data...');
+    log.info('📽️ Gathering Youtube Data...');
     const youtubeActor = await Actor.call('streamers/youtube-scraper', {
         maxResults: ytMaxResults,
         scrapeLastNDays: nDays,
@@ -22,7 +22,7 @@ export async function fetchYoutubeData(channelUrl, nDays, ytMaxResults) {
 
     const youtubeData = (await youtubeRunDataset).data;
 
-    console.log('✅ Youtube data was successfully extracted.');
+    log.info('✅ Youtube data was successfully extracted.');
     return youtubeData.map((yt) => ({
         channelName: yt.channelName,
         channelSubscribers: yt.numberOfSubscribers,

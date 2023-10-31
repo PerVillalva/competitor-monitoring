@@ -1,52 +1,53 @@
-import { Actor } from 'apify';
+import { Actor, log } from 'apify';
 import axios from 'axios';
 
 const { APIFY_TOKEN } = process.env;
 
-function filterTweets(tweets, term) {
-    // Get the current date and time
-    const currentDate = new Date();
+function filterTweets(tweets, term, lastNDays) {
+    const cutoffDate = new Date();
+    cutoffDate.setDate(cutoffDate.getDate() - lastNDays);
 
     return tweets.filter((tweet) => {
-        // Convert the tweet's timestamp to a JavaScript Date object
         const tweetDate = new Date(tweet.timestamp);
-
-        // Calculate the difference in days between the current date and the tweet's timestamp
-        const dayDifference = (currentDate - tweetDate) / (1000 * 60 * 60 * 24); // Convert milliseconds to days
-
-        // Check if the tweet contains the word "scrapingbee"
-        if (term !== undefined) {
-            const containsTerm = tweet.text.toLowerCase().includes(term);
-            return dayDifference <= 7 && containsTerm;
-        }
-        return dayDifference;
-
-        // Return true if the tweet is at most 7 days old and contains the word "scrapingbee"
+        const isRecent = tweetDate >= cutoffDate;
+        const containsTerm = term ? tweet.text.toLowerCase().includes(term) : true;
+        return isRecent && containsTerm;
     });
 }
 
-export async function fetchTwitterData(twitterProfile, twitterFilterTerm) {
-    console.log('🐦 Gathering Twitter Data...');
-    const twitterActor = await Actor.call('shanes/tweet-flash', {
-        from_user: [twitterProfile],
-        max_tweets: 50,
-    });
+async function fetchDataFromApify(datasetId) {
+    const url = `https://api.apify.com/v2/datasets/${datasetId}/items/?token=${APIFY_TOKEN}`;
+    try {
+        const response = await axios.get(url);
+        return response.data;
+    } catch (error) {
+        log.error('Failed to fetch data from Apify:', error);
+        throw error;
+    }
+}
 
-    const twitterTaskId = twitterActor.defaultDatasetId;
+export async function fetchTwitterData(twitterProfile, twitterFilterTerm, twitterLastNDays) {
+    log.info('🐦 Gathering Twitter Data...');
+    try {
+        const twitterActor = await Actor.call('shanes/tweet-flash', {
+            from_user: [twitterProfile],
+            max_tweets: 50,
+        });
 
-    const twitterRunDataset = axios.get(
-        `https://api.apify.com/v2/datasets/${twitterTaskId}/items/?token=${APIFY_TOKEN}`,
-    );
+        const twitterTaskId = twitterActor.defaultDatasetId;
+        const tweets = await fetchDataFromApify(twitterTaskId);
 
-    const filteredTweets = filterTweets(
-        (await twitterRunDataset).data,
-        twitterFilterTerm,
-    );
+        const filteredTweets = filterTweets(tweets, twitterFilterTerm, twitterLastNDays);
 
-    console.log('✅ Twitter data was successfully extracted.');
-    return filteredTweets.map((tweet) => ({
-        tweetUrl: tweet.url,
-        tweetText: tweet.text,
-        tweetDate: tweet.timestamp.split(' ')[0],
-    }));
+        log.info('✅ Twitter data was successfully extracted.');
+        return filteredTweets.map((tweet) => ({
+            tweetAuthor: tweet.username,
+            tweetUrl: tweet.url,
+            tweetText: tweet.text,
+            tweetDate: tweet.timestamp.split(' ')[0],
+        }));
+    } catch (error) {
+        log.error('Failed to fetch Twitter data:', error);
+        throw error;
+    }
 }
