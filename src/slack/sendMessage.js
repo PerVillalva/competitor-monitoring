@@ -2,6 +2,8 @@
 import Slack from '@slack/bolt';
 import { log } from 'apify';
 
+import { filterBlogURLs } from './utilFunctions.js';
+
 export async function postSlackMessage(
     initialUrl,
     newUrls,
@@ -27,24 +29,30 @@ export async function postSlackMessage(
         newTweets.forEach((tweet, index) => {
             tweetsString += `${separator}\nTweet ${index + 1}:\nUrl: ${
                 tweet.tweetUrl
-            }\nAuthor: ${tweet.tweetAuthor}\nText: ${tweet.tweetText}\nDate: ${tweet.tweetDate}`;
+            }\nAuthor: ${tweet.tweetAuthor}\nText: ${tweet.tweetText}\nDate: ${
+                tweet.tweetDate
+            }`;
         });
     } else {
         tweetsString = `No new Tweets.`;
     }
 
     // Prepare New Pages
-    const pagesString = `:page_facing_up: ${
-        newUrls.length
-    } new pages were created: \n${newUrls.join('\n')}`;
+    const { blogURLs: newBlogPages, remainingURLs: newPages } = filterBlogURLs(newUrls);
 
-    const updatesString = `:arrows_counterclockwise: ${
-        pageUpdates.length
-    } pages were updated: \n${pageUpdates
-        .map(
-            (update) => `${separator}\nUpdated page URL: ${update.url}\nUpdated on: ${update.lastMod}`,
-        )
-        .join('\n')}`;
+    let pagesString = `:page_facing_up: ${newUrls.length} pages were created.`;
+
+    pagesString += newBlogPages.length > 0 ? `${separator}\n:pencil: Blog new pages: ${newBlogPages.length}\n${newBlogPages.join('\n')}${separator}` : '';
+    pagesString += newPages.length > 0 ? `\n:bulb: Product new pages: ${newPages.length}\n${newPages.join('\n')}` : '';
+
+    // Prepare Updated Pages
+    const { blogURLs: updatedBlogPages, remainingURLs: updatedProductPages } = filterBlogURLs(pageUpdates.map((update) => update.url));
+
+    let updatesString = `:arrows_counterclockwise: ${pageUpdates.length} pages were updated.`;
+
+    // eslint-disable-next-line max-len
+    updatesString += updatedBlogPages.length > 0 ? `${separator}\n:pencil: Blog Updates: ${updatedBlogPages.length}\n${updatedBlogPages.join('\n')}${separator}` : '';
+    updatesString += updatedProductPages.length > 0 ? `\n:bulb: Product Updates: ${updatedProductPages.length}\n${updatedProductPages.join('\n')}` : '';
 
     // Prepare YouTube videos
     let ytString;
