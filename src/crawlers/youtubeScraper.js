@@ -30,5 +30,9 @@ export async function fetchYoutubeData(channelUrl, nDays, ytMaxResults) {
         videoViewCount: yt.viewCount,
         videoUrl: yt.url,
         videoTitle: yt.title,
+        videoDuration: yt.duration,
+        videoThumbnail: yt.thumbnailUrl,
+        videoLikes: yt.likes,
+        videoComments: yt.commentsCount,
     }));
 }

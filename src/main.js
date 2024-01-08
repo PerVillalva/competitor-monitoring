@@ -101,6 +101,7 @@ import { postSlackMessage } from './slack/sendMessage.js';
             // Send competitors' report to Slack
             if (slackSignInSecret) {
                 await postSlackMessage(
+                    ytLastNDays,
                     initialUrls,
                     newPages,
                     updatedPages,
@@ -112,7 +113,7 @@ import { postSlackMessage } from './slack/sendMessage.js';
                 );
             }
         } catch (error) {
-            log.info('Error occurred:', error.message);
+            log.error(error.stack);
         }
     }
     await main();
