@@ -42,9 +42,14 @@ export async function fetchTwitterData(twitterProfile, twitterFilterTerm, twitte
         log.info('✅ Twitter data was successfully extracted.');
         return filteredTweets.map((tweet) => ({
             tweetAuthor: tweet.username,
+            tweetAvatar: tweet.tweet_avatar,
             tweetUrl: tweet.url,
             tweetText: tweet.text,
             tweetDate: tweet.timestamp.split(' ')[0],
+            tweetLikes: tweet.likes,
+            tweetRetweets: tweet.retweets,
+            tweetReplies: tweet.replies,
+            inReplyTo: tweet.in_reply_to,
         }));
     } catch (error) {
         log.error('Failed to fetch Twitter data:', error);

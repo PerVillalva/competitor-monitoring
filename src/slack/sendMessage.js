@@ -37,7 +37,6 @@ export async function postSlackMessage(
             tweetAvatar,
             tweetUrl,
             tweetText,
-            tweetImage,
             tweetDate,
             tweetLikes,
             tweetRetweets,
@@ -46,17 +45,16 @@ export async function postSlackMessage(
         } = tweet;
 
         // Generate Slack JSON block
-        newTweetsArr(...generateTwitterBlock(
+        newTweetsArr.push(...generateTwitterBlock(
             tweetAuthor,
-            tweetAvatar,
             tweetDate,
+            tweetLikes,
+            tweetReplies,
+            tweetRetweets,
+            inReplyTo,
             tweetText,
             tweetUrl,
-            tweetImage,
-            tweetLikes,
-            tweetRetweets,
-            tweetReplies,
-            inReplyTo,
+            tweetAvatar,
         ));
     });
 

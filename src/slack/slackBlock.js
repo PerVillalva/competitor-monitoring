@@ -8,6 +8,7 @@ export function generateTwitterBlock(
     inReplyTo,
     tweetText,
     tweetURL,
+    tweetAvatarImg,
 ) {
     const tweetBlock = [
         {
@@ -18,7 +19,7 @@ export function generateTwitterBlock(
             },
             accessory: {
                 type: 'image',
-                image_url: `tweetAvatarImg`,
+                image_url: `${tweetAvatarImg}`,
                 alt_text: 'author_avatar',
             },
         },
@@ -238,6 +239,9 @@ export function generateBlock(
             type: 'divider',
         },
         {
+            type: 'divider',
+        },
+        {
             type: 'header',
             text: {
                 type: 'plain_text',
@@ -261,6 +265,9 @@ export function generateBlock(
             },
         },
         ...(updatedProductPages.length > 0 ? updatedProductPages : []),
+        {
+            type: 'divider',
+        },
         {
             type: 'divider',
         },
