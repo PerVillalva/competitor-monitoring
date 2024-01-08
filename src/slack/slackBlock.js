@@ -132,60 +132,52 @@ export function generateYTBlock(
 
 // New Product Pages
 export function generateNewProductBlock(
-    newProdPageCategory,
     newProdPageURL,
-    newProdPageTitle,
 ) {
     return {
         type: 'section',
         text: {
             type: 'mrkdwn',
-            text: `• *\`${newProdPageCategory}\`* - <${newProdPageURL}|${newProdPageTitle}>\n`,
+            text: `• ${newProdPageURL}\n`,
         },
     };
 }
 
 // New Blog Pages
 export function generateNewBlogBlock(
-    newBlogPageCategory,
     newBlogPageURL,
-    newBlogPageTitle,
 ) {
     return {
         type: 'section',
         text: {
             type: 'mrkdwn',
-            text: `• *\`${newBlogPageCategory}\`* - <${newBlogPageURL}|${newBlogPageTitle}>\n`,
+            text: `• ${newBlogPageURL}\n`,
         },
     };
 }
 
 // Updated Product Pages
 export function generateUpdatedProductBlock(
-    updatedProdPageCategory,
     updatedProdPageURL,
-    updatedProdPageTitle,
 ) {
     return {
         type: 'section',
         text: {
             type: 'mrkdwn',
-            text: `• *\`${updatedProdPageCategory}\`* - <${updatedProdPageURL}|${updatedProdPageTitle}>\n`,
+            text: `• ${updatedProdPageURL}\n`,
         },
     };
 }
 
 // Updated Blogs
 export function generateUpdatedBlogBlock(
-    updatedBlogPageCategory,
     updatedBlogPageURL,
-    updatedBlogPageTitle,
 ) {
     return {
         type: 'section',
         text: {
             type: 'mrkdwn',
-            text: `• *\`${updatedBlogPageCategory}\`* - <${updatedBlogPageURL}|${updatedBlogPageTitle}>\n`,
+            text: `• ${updatedBlogPageURL}\n`,
         },
     };
 }
@@ -199,6 +191,7 @@ export function generateBlock(
     updatedPagesCount,
     updatedBlogPages,
     updatedProductPages,
+    twitterProfile,
     newTweetsCount,
     newTweets,
     newVideosCount,
@@ -283,7 +276,9 @@ export function generateBlock(
             type: 'section',
             text: {
                 type: 'mrkdwn',
-                text: `*💬 New Tweets: \`${newTweetsCount}\`*\n`,
+                text: twitterProfile !== undefined
+                    ? `*💬 New Tweets from ${twitterProfile}: \`${newTweetsCount}\`*\n\n`
+                    : 'No Twitter profile provided. Please provide a Twitter profile to monitor.',
             },
         },
         ...(newTweets.length > 0 ? newTweets : []),
@@ -302,16 +297,16 @@ export function generateBlock(
             type: 'section',
             text: {
                 type: 'mrkdwn',
-                text: `*📹 Videos in the last ${ytLastNDays} days: \`${newVideosCount}\`*\n\n*🎬 Channel Subs: \`${channelSubsCount}\`*`,
+                text: ytLastNDays !== undefined
+                    ? `*📹 Videos posted in the last ${ytLastNDays} days: \`${newVideosCount}\`*\n\n${
+                        newVideosCount >= 1 ? `*🎬 Current Channel Subscribers: \`${channelSubsCount}\`*` : ''}`
+                    : 'No YouTube Channel provided. Please provide a YouTube channel to monitor.',
             },
         },
         {
             type: 'divider',
         },
         ...(newVideos.length > 0 ? newVideos : []),
-        {
-            type: 'divider',
-        },
     ];
     return slackBlock;
 }

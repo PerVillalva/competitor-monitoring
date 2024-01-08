@@ -14,6 +14,7 @@ import { filterBlogURLs } from './utilFunctions.js';
 
 export async function postSlackMessage(
     ytLastNDays,
+    twitterProfile,
     initialUrl,
     newUrls,
     pageUpdates,
@@ -65,16 +66,12 @@ export async function postSlackMessage(
     const newBlogPagesArr = [];
     const newProductPagesArr = [];
 
-    (newBlogPages || []).forEach(({ category, url, title }) => {
-        if (title !== '') {
-            newBlogPagesArr.push(generateNewBlogBlock(category, url, title));
-        }
+    (newBlogPages || []).forEach(({ url }) => {
+        newBlogPagesArr.push(generateNewBlogBlock(url));
     });
 
-    (newProductPages || []).forEach(({ category, url, title }) => {
-        if (title !== '') {
-            newProductPagesArr.push(generateNewProductBlock(category, url, title));
-        }
+    (newProductPages || []).forEach(({ url }) => {
+        newProductPagesArr.push(generateNewProductBlock(url));
     });
 
     // Prepare Updated Page
@@ -83,16 +80,12 @@ export async function postSlackMessage(
     const updatedBlogPagesArr = [];
     const updatedProductPagesArr = [];
 
-    (updatedBlogPages || []).forEach(({ category, url, title }) => {
-        if (title !== '') {
-            updatedBlogPagesArr.push(generateUpdatedBlogBlock(category, url, title));
-        }
+    (updatedBlogPages || []).forEach(({ url }) => {
+        updatedBlogPagesArr.push(generateUpdatedBlogBlock(url));
     });
 
-    (updatedProductPages || []).forEach(({ category, url, title }) => {
-        if (title !== '') {
-            updatedProductPagesArr.push(generateUpdatedProductBlock(category, url, title));
-        }
+    (updatedProductPages || []).forEach(({ url }) => {
+        updatedProductPagesArr.push(generateUpdatedProductBlock(url));
     });
 
     // Prepare YouTube videos
@@ -130,6 +123,7 @@ export async function postSlackMessage(
         (pageUpdates ? pageUpdates.length : 0),
         updatedBlogPagesArr,
         updatedProductPagesArr,
+        twitterProfile,
         (newTweets ? newTweets.length : 0),
         newTweetsArr,
         (ytData ? ytData.length : 0),

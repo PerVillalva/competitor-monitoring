@@ -102,6 +102,7 @@ import { postSlackMessage } from './slack/sendMessage.js';
             if (slackSignInSecret) {
                 await postSlackMessage(
                     ytLastNDays,
+                    twitterProfile,
                     initialUrls,
                     newPages,
                     updatedPages,
