@@ -30,7 +30,7 @@ export async function postSlackMessage(
 
     // Prepare Tweets
     const newTweetsArr = [];
-    newTweets.forEach((tweet) => {
+    (newTweets || []).forEach((tweet) => {
         const {
             tweetAuthor,
             tweetAvatar,
@@ -65,13 +65,13 @@ export async function postSlackMessage(
     const newBlogPagesArr = [];
     const newProductPagesArr = [];
 
-    newBlogPages.forEach(({ category, url, title }) => {
+    (newBlogPages || []).forEach(({ category, url, title }) => {
         if (title !== '') {
             newBlogPagesArr.push(generateNewBlogBlock(category, url, title));
         }
     });
 
-    newProductPages.forEach(({ category, url, title }) => {
+    (newProductPages || []).forEach(({ category, url, title }) => {
         if (title !== '') {
             newProductPagesArr.push(generateNewProductBlock(category, url, title));
         }
@@ -83,13 +83,13 @@ export async function postSlackMessage(
     const updatedBlogPagesArr = [];
     const updatedProductPagesArr = [];
 
-    updatedBlogPages.forEach(({ category, url, title }) => {
+    (updatedBlogPages || []).forEach(({ category, url, title }) => {
         if (title !== '') {
             updatedBlogPagesArr.push(generateUpdatedBlogBlock(category, url, title));
         }
     });
 
-    updatedProductPages.forEach(({ category, url, title }) => {
+    (updatedProductPages || []).forEach(({ category, url, title }) => {
         if (title !== '') {
             updatedProductPagesArr.push(generateUpdatedProductBlock(category, url, title));
         }
@@ -97,7 +97,7 @@ export async function postSlackMessage(
 
     // Prepare YouTube videos
     const newYtVideosArr = [];
-    ytData.forEach((video) => {
+    (ytData || []).forEach((video) => {
         const {
             videoDate,
             videoViewCount,
