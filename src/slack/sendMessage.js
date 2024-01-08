@@ -124,16 +124,16 @@ export async function postSlackMessage(
     // Create master Slack block
     const slackMessageBlock = generateBlock(
         competitorNameClean,
-        newUrls.length,
+        (newUrls ? newUrls.length : 0),
         newBlogPagesArr,
         newProductPagesArr,
-        pageUpdates.length,
+        (pageUpdates ? pageUpdates.length : 0),
         updatedBlogPagesArr,
         updatedProductPagesArr,
-        newTweets.length,
+        (newTweets ? newTweets.length : 0),
         newTweetsArr,
-        ytData.length,
-        ytData[0].channelSubscribers,
+        (ytData ? ytData.length : 0),
+        (ytData && ytData[0] ? ytData[0].channelSubscribers : 0),
         ytLastNDays,
         newYtVideosArr,
     );
