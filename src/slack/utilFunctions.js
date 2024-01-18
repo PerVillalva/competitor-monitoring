@@ -35,7 +35,7 @@ function classifyUrl(url, blogUrlPattern) {
 
 export function filterBlogURLs(urlArray) {
     // Regular expression pattern to match common blog URL structures
-    const blogUrlPattern = /\/(blog|blogs|articles)|\.blog\./i;
+    const blogUrlPattern = /\/(blog|blogs)|\.blog\./i;
 
     const blogPages = [];
     const productPages = [];
