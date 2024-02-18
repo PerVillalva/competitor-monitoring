@@ -1,25 +1,36 @@
 // Twitter
 export function generateTwitterBlock(
-    tweetAuthor,
-    tweetDate,
-    tweetLikes,
-    tweetReplies,
-    tweetRetweets,
-    inReplyTo,
-    tweetText,
+    author,
+    authorAvatar,
+    date,
+    text,
     tweetURL,
-    tweetAvatarImg,
+    tweetLikes,
+    tweetRetweets,
+    tweetReplies,
+    inReplyTo,
+    authorFollowers,
 ) {
     const tweetBlock = [
+        {
+            type: 'header',
+            text: {
+                type: 'plain_text',
+                text: '🐦 New Apify mention on X (Twitter)',
+                emoji: true,
+            },
+        },
         {
             type: 'section',
             text: {
                 type: 'mrkdwn',
-                text: `*Author*\n*${tweetAuthor}*\n\n*Date*\n*${tweetDate}*\n`,
+                text: `*:bust_in_silhouette: Author: \`${author}\`*\n\n\n`
+                    + `*:busts_in_silhouette: Follower Count: \`${authorFollowers}\`*\n\n\n`
+                    + `*:spiral_calendar_pad: Date: \`${date}\`*`,
             },
             accessory: {
                 type: 'image',
-                image_url: `${tweetAvatarImg}`,
+                image_url: `${authorAvatar}`,
                 alt_text: 'author_avatar',
             },
         },
@@ -42,7 +53,7 @@ export function generateTwitterBlock(
                     ? [
                         {
                             type: 'mrkdwn',
-                            text: `*:leftwards_arrow_with_hook: In reply to ${inReplyTo[0]}*`,
+                            text: `*:leftwards_arrow_with_hook: In reply to ${inReplyTo}*`,
                         },
                     ]
                     : []),
@@ -55,7 +66,7 @@ export function generateTwitterBlock(
             type: 'section',
             text: {
                 type: 'mrkdwn',
-                text: `${tweetText}`,
+                text: `${text}`,
             },
             accessory: {
                 type: 'button',

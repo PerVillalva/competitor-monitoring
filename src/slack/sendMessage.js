@@ -35,26 +35,28 @@ export async function postSlackMessage(
         const {
             tweetAuthor,
             tweetAvatar,
-            tweetUrl,
-            tweetText,
             tweetDate,
+            tweetText,
+            tweetUrl,
             tweetLikes,
             tweetRetweets,
             tweetReplies,
             inReplyTo,
+            authorFollowers,
         } = tweet;
 
         // Generate Slack JSON block
         newTweetsArr.push(...generateTwitterBlock(
             tweetAuthor,
+            tweetAvatar,
             tweetDate,
-            tweetLikes,
-            tweetReplies,
-            tweetRetweets,
-            inReplyTo,
             tweetText,
             tweetUrl,
-            tweetAvatar,
+            tweetLikes,
+            tweetRetweets,
+            tweetReplies,
+            inReplyTo,
+            authorFollowers,
         ));
     });
 
