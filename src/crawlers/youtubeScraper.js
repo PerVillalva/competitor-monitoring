@@ -26,7 +26,7 @@ export async function fetchYoutubeData(channelUrl, nDays, ytMaxResults) {
     return youtubeData.map((yt) => ({
         channelName: yt.channelName,
         channelSubscribers: yt.numberOfSubscribers,
-        videoDate: yt.date.split('T')[0],
+        videoDate: yt.date?.split('T')[0] ?? yt.date,
         videoViewCount: yt.viewCount,
         videoUrl: yt.url,
         videoTitle: yt.title,
