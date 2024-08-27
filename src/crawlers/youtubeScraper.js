@@ -16,23 +16,32 @@ export async function fetchYoutubeData(channelUrl, nDays, ytMaxResults) {
 
     const youtubeTaskId = youtubeActor.defaultDatasetId;
 
-    const youtubeRunDataset = axios.get(
-        `https://api.apify.com/v2/datasets/${youtubeTaskId}/items/?token=${APIFY_TOKEN}`,
-    );
+    try {
+        const youtubeRunDataset = axios.get(
+            `https://api.apify.com/v2/datasets/${youtubeTaskId}/items/?token=${APIFY_TOKEN}`,
+        );
 
-    const youtubeData = (await youtubeRunDataset).data;
+        const youtubeData = (await youtubeRunDataset).data;
 
-    log.info('✅ Youtube data was successfully extracted.');
-    return youtubeData.map((yt) => ({
-        channelName: yt.channelName,
-        channelSubscribers: yt.numberOfSubscribers,
-        videoDate: yt.date?.split('T')[0] ?? yt.date,
-        videoViewCount: yt.viewCount,
-        videoUrl: yt.url,
-        videoTitle: yt.title,
-        videoDuration: yt.duration,
-        videoThumbnail: yt.thumbnailUrl,
-        videoLikes: yt.likes,
-        videoComments: yt.commentsCount,
-    }));
+        log.info('✅ Youtube data was successfully extracted.');
+
+        if (youtubeData[0].title === undefined) {
+            return [];
+        }
+        return youtubeData.map((yt) => ({
+            channelName: yt.channelName,
+            channelSubscribers: yt.numberOfSubscribers,
+            videoDate: yt.date?.split('T')[0] ?? 'Unknown Date',
+            videoViewCount: yt.viewCount,
+            videoUrl: yt.url,
+            videoTitle: yt.title,
+            videoDuration: yt.duration,
+            videoThumbnail: yt.thumbnailUrl,
+            videoLikes: yt.likes,
+            videoComments: yt.commentsCount,
+        }));
+    } catch (error) {
+        log.error('❌ Failed to fetch Youtube data:', error);
+        throw new Error('Failed to fetch Youtube data');
+    }
 }
