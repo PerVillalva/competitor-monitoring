@@ -39,7 +39,7 @@ function filterTweets(tweets, term, lastNDays) {
     cutoffDate.setDate(cutoffDate.getDate() - lastNDays);
 
     return tweets.filter((tweet) => {
-        const tweetDate = new Date(tweet.created_at);
+        const tweetDate = new Date(tweet.createdAt);
         const isRecent = tweetDate >= cutoffDate;
         const containsTerm = term ? tweet.text.toLowerCase().includes(term) : true;
         return isRecent && containsTerm;
@@ -61,8 +61,8 @@ export async function fetchTwitterData(twitterProfile, twitterFilterTerm, twitte
     log.info('🐦 Gathering Twitter Data...');
     try {
         const twitterActor = await Actor.call('apidojo/tweet-scraper', {
-            searchTerms: [twitterProfile],
-            maxTweets: 10,
+            searchTerms: [twitterFilterTerm],
+            maxItems: 10,
             sort: 'Latest',
         });
 
@@ -77,7 +77,7 @@ export async function fetchTwitterData(twitterProfile, twitterFilterTerm, twitte
             tweetAvatar: tweet.author.profilePicture,
             authorFollowers: tweet.author.followers,
             tweetUrl: tweet.url,
-            tweetText: tweet.full_text,
+            tweetText: tweet.text,
             tweetDate: parseDate(tweet.createdAt),
             tweetLikes: tweet.likeCount,
             tweetRetweets: tweet.retweetCount,
