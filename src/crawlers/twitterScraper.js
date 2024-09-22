@@ -60,11 +60,10 @@ async function fetchDataFromApify(datasetId) {
 export async function fetchTwitterData(twitterProfile, twitterFilterTerm, twitterLastNDays) {
     log.info('🐦 Gathering Twitter Data...');
     try {
-        const twitterActor = await Actor.call('microworlds/twitter-scraper', {
-            handle: [twitterProfile],
-            maxTweets: 50,
-            scrapeTweetReplies: true,
-            addUserInfo: true,
+        const twitterActor = await Actor.call('apidojo/tweet-scraper', {
+            searchTerms: [twitterProfile],
+            maxTweets: 10,
+            sort: 'Latest',
         });
 
         const twitterTaskId = twitterActor.defaultDatasetId;
@@ -74,16 +73,16 @@ export async function fetchTwitterData(twitterProfile, twitterFilterTerm, twitte
 
         log.info('✅ Twitter data was successfully extracted.');
         return filteredTweets.map((tweet) => ({
-            tweetAuthor: tweet.user.name,
-            tweetAvatar: tweet.user.profile_image_url_https,
-            authorFollowers: tweet.user.followers_count,
+            tweetAuthor: tweet.author.userName,
+            tweetAvatar: tweet.author.profilePicture,
+            authorFollowers: tweet.author.followers,
             tweetUrl: tweet.url,
             tweetText: tweet.full_text,
-            tweetDate: parseDate(tweet.created_at),
-            tweetLikes: tweet.favorite_count,
-            tweetRetweets: tweet.retweet_count,
-            tweetReplies: tweet.reply_count,
-            inReplyTo: tweet.in_reply_to_screen_name || '',
+            tweetDate: parseDate(tweet.createdAt),
+            tweetLikes: tweet.likeCount,
+            tweetRetweets: tweet.retweetCount,
+            tweetReplies: tweet.replyCount,
+            inReplyTo: tweet.isReply ? tweet.inReplyToUsername : '',
         }));
     } catch (error) {
         log.error('Failed to fetch Twitter data:', error);
