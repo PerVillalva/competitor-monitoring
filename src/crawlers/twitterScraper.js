@@ -61,6 +61,7 @@ export async function fetchTwitterData(twitterProfile, twitterFilterTerm, twitte
     log.info('🐦 Gathering Twitter Data...');
     try {
         const twitterActor = await Actor.call('apidojo/tweet-scraper', {
+            author: twitterProfile,
             searchTerms: [twitterFilterTerm],
             maxItems: 10,
             sort: 'Latest',
